@@ -3,164 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поисковое окно и погода</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Оптимизация Windows</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
+            margin: 0;
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(270deg, #ff7e5f, #feb47b);
+            background: linear-gradient(135deg, #f4f4f4, #d9d9d9);
+            color: #333;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            transition: background 0.5s;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 0;
+            transition: transform 0.5s;
+        }
+
+        h1:hover {
+            transform: scale(1.1);
+        }
+
+        p {
+            font-size: 18px;
+            margin: 20px 0;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.5s;
+        }
+
+        .button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 1s;
+        }
+
+        .button:hover {
+            background-color: #555;
+            transform: translateY(-3px);
+        }
+
+        .content {
+            display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            animation: backgroundAnimation 10s ease infinite;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        @keyframes backgroundAnimation {
-            0% { background: #ff7e5f; }
-            50% { background: #feb47b; }
-            100% { background: #ff7e5f; }
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .search-container, .weather-container {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            padding: 30px;
-            width: 320px;
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 20px;
         }
 
-        .search-container:hover, .weather-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        h1, h2 {
-            font-weight: 700;
-            margin: 0 0 20px;
-            color: #333;
-            animation: fadeIn 1s;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        input[type="text"] {
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            position: absolute;
+            bottom: 0;
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border 0.3s, box-shadow 0.3s;
-            outline: none;
+            background-color: #fff;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        input[type="text"]:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        footer p {
+            margin: 0;
+            color: #333;
         }
 
-        button {
-            margin-top: 15px;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            background-color: #007bff;
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #333;
             color: white;
-            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+           
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 100%;
         }
 
-        button:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        .modal-content button:hover {
+            background-color: #555;
         }
 
-        button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        /* Кнопка смены темы */
+        .theme-toggle {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .button-container {
+        .theme-toggle:hover {
+            background-color: #555;
+        }
+
+        .telegram-link {
+            margin-top: 20px;
             display: flex;
-            flex-direction: column;
-            width: 100%;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
         }
+
+        .telegram-link img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="search-container">
-            <h1>Поиск</h1>
-            <input type="text" placeholder="Введите ваш запрос..." id="search-input">
-            <div class="button-container">
-                <button onclick="performSearch()">Поиск</button>
-                <button onclick="resetSearch()">Сбросить</button>
-            </div>
-        </div>
-        <div class="weather-container">
-            <h2>Погода</h2>
-            <div id="weather-info">Загрузка...</div>
-            <div class="button-container">
-                <button onclick="getWeather()">Обновить погоду</button>
-                <button onclick="resetWeather()">Сбросить погоду</button>
-            </div>
-        </div>
+
+<header>
+    <h1>Оптимизация Windows</h1>
+    <p>Скачайте архив для улучшения производительности вашего ПК.</p>
+    <button class="button" onclick="openModal()">Скачать архив</button>
+    <button class="theme-toggle" onclick="toggleTheme()">Сменить тему</button>
+</header>
+
+<div class="content" id="content">
+    <div class="card">
+        <h2>Советы по оптимизации</h2>
+        <p>Узнайте, как улучшить скорость работы вашей системы.</p>
     </div>
+    <div class="card">
+        <h2>Проблемы и решения</h2>
+        <p>Решите распространенные проблемы с производительностью.</p>
+    </div>
+    <div class="card">
+        <h2>Настройки системы</h2>
+        <p>Оптимизируйте настройки для повышения эффективности.</p>
+    </div>
+</div>
 
-    <script>
-        async function getWeather() {
-            try {
-                const response = await fetch('https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&q=Москва'); // Замените на ваш API ключ и город
-                if (response.ok) {
-                    const data = await response.json();
-                    const weatherInfo = `Температура: ${data.current.temp_c}°C, ${data.current.condition.text}`;
-                    document.getElementById('weather-info').innerText = weatherInfo;
-                } else {
-                    document.getElementById('weather-info').innerText = 'Ошибка получения данных';
-                }
-            } catch (error) {
-                document.getElementById('weather-info').innerText = 'Ошибка сети';
-            }
+<footer>
+    <p>&copy; 2023 Оптимизация Windows. Все права защищены.</p>
+    <a href="https://t.me/mzstacks" class="telegram-link" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Telegram_logo.svg" alt="Telegram Logo">
+        Подписаться на наш Telegram-канал
+    </a>
+</footer>
+
+<!-- Модальное окно для ввода пароля -->
+<div id="passwordModal" class="modal">
+    <div class="modal-content">
+        <h2>Введите пароль для скачивания</h2>
+        <input type="password" id="password" placeholder="Пароль">
+        <button onclick="checkPassword()">Подтвердить</button>
+        <p id="message" style="color: red;"></p>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById("passwordModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("passwordModal").style.display = "none";
+        document.getElementById("message").innerText = ""; // Сброс сообщения
+    }
+
+    function checkPassword() {
+        const password = document.getElementById("password").value;
+        const correctPassword = "2024OptSezzynq"; // Замените на ваш пароль
+        if (password === correctPassword) {
+            window.location.href = "https://drive.google.com/file/d/1q8ApJiKJAOGbczvEdlhTY2IDuJPnc8Q7/view?usp=sharing"; // Замените на путь к вашему архиву
+            closeModal();
+        } else {
+            document.getElementById("message").innerText = "Неверный пароль. Попробуйте еще раз.";
         }
+    }
 
-        function performSearch() {
-            const query = document.getElementById('search-input').value;
-            if (query) {
-                alert(`Вы искали: ${query}`);
-            } else {
-                alert('Пожалуйста, введите запрос для поиска.');
-            }
+    // Закрытие модального окна при клике вне его
+    window.onclick = function(event) {
+        const modal = document.getElementById("passwordModal");
+        if (event.target === modal) {
+            closeModal();
         }
+    }
 
-        function resetSearch() {
-            document.getElementById('search-input').value = '';
-        }
+    // Смена темы
+    let darkTheme = false;
 
-        function resetWeather() {
-            document.getElementById('weather-info').innerText = 'Загрузка...';
-        }
+    function toggleTheme() {
+        darkTheme = !darkTheme;
+        document.body.style.background = darkTheme ? 'linear-gradient(135deg, #333, #555)' : 'linear-gradient(135deg, #f4f4f4, #d9d9d9)';
+        document.body.style.color = darkTheme ? '#f4f4f4' : '#333';
+        const buttons = document.querySelectorAll('.button, .theme-toggle');
+        buttons.forEach(button => {
+            button.style.backgroundColor = darkTheme ? '#555' : '#333';
+            button.style.color = darkTheme ? '#f4f4f4' : '#fff';
+        });
+    }
+</script>
 
-        // Инициализация погоды при загрузке страницы
-        window.onload = getWeather;
-    </script>
 </body>
 </html>
+           
