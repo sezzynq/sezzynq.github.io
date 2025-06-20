@@ -1,280 +1,71 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оптимизация Windows</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Фикс для Discord</title>
     <style>
         body {
             margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #f4f4f4, #d9d9d9);
-            color: #333;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            text-align: center;
-            overflow: hidden;
-            transition: background 0.5s;
+            min-height: 100vh;
         }
 
         header {
-            margin-bottom: 30px;
+            text-align: center;
+            padding: 20px;
         }
 
         h1 {
-            font-size: 48px;
-            margin: 0;
-            transition: transform 0.5s;
-        }
-
-        h1:hover {
-            transform: scale(1.1);
+            font-size: 3em;
+            margin-bottom: 10px;
         }
 
         p {
-            font-size: 18px;
-            margin: 20px 0;
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-            animation-delay: 0.5s;
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
         }
 
-        .button {
-            background-color: #333;
+        /* Стиль для кнопки */
+        .download-btn {
+            background-color: #ff4757;
             color: #fff;
-            border: none;
             padding: 15px 30px;
-            border-radius: 5px;
-            font-size: 18px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-            animation-delay: 1s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
-        .button:hover {
-            background-color: #555;
-            transform: translateY(-3px);
-        }
-
-        .content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .download-btn:hover {
+            background-color: #e84118;
+            transform: scale(1.05);
         }
 
         footer {
-            text-align: center;
-            padding: 20px 0;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background-color: #fff;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            font-size: 0.9em;
         }
-
-        footer p {
-            margin: 0;
-            color: #333;
-        }
-
-        /* Модальное окно */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 300px;
-            text-align: center;
-        }
-
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .modal-content button {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-           
-            cursor: pointer;
-        }
-
-        .modal-content button:hover {
-            background-color: #555;
-        }
-
-        /* Кнопка смены темы */
-        .theme-toggle {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .theme-toggle:hover {
-            background-color: #555;
-        }
-
-        .telegram-link {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .telegram-link img {
-            width: 24px;
-            height: 24px;
-            margin-right: 10px;
-        }
-
     </style>
 </head>
 <body>
-
-<header>
-    <h1>Оптимизация Windows</h1>
-    <p>Скачайте архив для улучшения производительности вашего ПК.</p>
-    <button class="button" onclick="openModal()">Скачать архив</button>
-</header>
-
-<div class="content" id="content">
-    <div class="card">
-        <h2>Советы по оптимизации</h2>
-        <p>Узнайте, как улучшить скорость работы вашей системы.</p>
-    </div>
-    <div class="card">
-        <h2>Проблемы и решения</h2>
-        <p>Решите распространенные проблемы с производительностью.</p>
-    </div>
-    <div class="card">
-        <h2>Настройки системы</h2>
-        <p>Оптимизируйте настройки для повышения эффективности.</p>
-    </div>
-</div>
-
-<footer>
-    <a href="https://t.me/mzstacks" class="telegram-link" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/512px-Telegram_2019_Logo.svg.png" alt="Telegram Logo">
-                   sezzynq - channel
-    </a>
-
-
-<!-- Модальное окно для ввода пароля -->
-<div id="passwordModal" class="modal">
-    <div class="modal-content">
-        <h2>Введите пароль для скачивания</h2>
-        <input type="password" id="password" placeholder="Пароль">
-        <button onclick="checkPassword()">Подтвердить</button>
-        <p id="message" style="color: red;"></p>
-    </div>
-</div>
-
-<script>
-    function openModal() {
-        document.getElementById("passwordModal").style.display = "flex";
-    }
-
-    function closeModal() {
-        document.getElementById("passwordModal").style.display = "none";
-        document.getElementById("message").innerText = ""; // Сброс сообщения
-    }
-
-    function checkPassword() {
-        const password = document.getElementById("password").value;
-        const correctPassword = "2024OptSezzynq"; // Замените на ваш пароль
-        if (password === correctPassword) {
-            window.location.href = "https://drive.google.com/file/d/1q8ApJiKJAOGbczvEdlhTY2IDuJPnc8Q7/view?usp=sharing"; // Замените на путь к вашему архиву
-            closeModal();
-        } else {
-            document.getElementById("message").innerText = "Неверный пароль. Попробуйте еще раз.";
-        }
-    }
-
-    // Закрытие модального окна при клике вне его
-    window.onclick = function(event) {
-        const modal = document.getElementById("passwordModal");
-        if (event.target === modal) {
-            closeModal();
-        }
-    }
-
-    // Смена темы
-    let darkTheme = false;
-
-    function toggleTheme() {
-        darkTheme = !darkTheme;
-        document.body.style.background = darkTheme ? 'linear-gradient(135deg, #333, #555)' : 'linear-gradient(135deg, #f4f4f4, #d9d9d9)';
-        document.body.style.color = darkTheme ? '#f4f4f4' : '#333';
-        const buttons = document.querySelectorAll('.button, .theme-toggle');
-        buttons.forEach(button => {
-            button.style.backgroundColor = darkTheme ? '#555' : '#333';
-            button.style.color = darkTheme ? '#f4f4f4' : '#fff';
-        });
-    }
-</script>
-
+    <header>
+        <h1>Фикс для Discord</h1>
+        <p>Скачайте последний фикс для улучшения работы Discord прямо сейчас!</p>
+        <a href="https://wdho.ru/7Rz8 " target="_blank">
+            <button class="download-btn">Скачать</button>
+        </a>
+    </header>
+    <footer>
+        &copy; by sezzynq | 2025.
+    </footer>
 </body>
 </html>
